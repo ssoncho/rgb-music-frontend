@@ -1,0 +1,14 @@
+.setting {
+  display: flex;
+  column-gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting:not(:first-child) {
+  margin-top: 35px;
+}
+
+.name {
+  line-height: 20px;
+}

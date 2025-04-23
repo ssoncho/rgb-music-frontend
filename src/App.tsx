@@ -1,8 +1,9 @@
+import "./assets/css/fonts.css";
 import "./App.css";
-import Settings from "./pages/Settings";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
-  return <Settings mode="Режим 1" />;
+  return <Settings mode="Радуга" />;
 }
 
 export default App;

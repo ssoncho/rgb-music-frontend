@@ -1,0 +1,24 @@
+.container {
+  width: 329px;
+  display: flex;
+  column-gap: 16px;
+  align-items: center;
+}
+
+.percentageInput {
+  padding: 7px 9px 0px 8px;
+  width: 49px;
+  height: 35px;
+  text-align: start;
+  color: #f8d4fe;
+  background-color: #222629;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+.percentageInput::-webkit-inner-spin-button,
+.percentageInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

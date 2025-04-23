@@ -1,10 +1,9 @@
 import { useCallback, useRef, useState } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 
-import useClickOutside from "../../hooks/useClickOutside";
+import useClickOutside from "../../../../hooks/useClickOutside";
 
-import "./ColorPicker.css";
-import { Stack } from "@mui/material";
+import styles from "./ColorPicker.module.css";
 
 interface ColorPickerProps {
   stripColor: string;
@@ -25,27 +24,22 @@ function ColorPicker({ stripColor, setStripColor }: ColorPickerProps) {
   useClickOutside(popover, close);
 
   return (
-    <Stack
-      width={200}
-      direction={"row"}
-      spacing={1}
-      sx={{ alignItems: "center" }}
-    >
-      <div className="picker">
+    <div className={styles.container}>
+      <div className={styles.picker}>
         <div
-          className="swatch"
+          className={styles.swatch}
           style={{ backgroundColor: color }}
           onClick={() => toggle(true)}
         />
 
         {isOpen && (
-          <div className="popover" ref={popover}>
+          <div className={styles.popover} ref={popover}>
             <HexColorPicker color={color} onChange={handleColorChange} />
           </div>
         )}
       </div>
       <HexColorInput color={color} onChange={handleColorChange} />
-    </Stack>
+    </div>
   );
 }
 
