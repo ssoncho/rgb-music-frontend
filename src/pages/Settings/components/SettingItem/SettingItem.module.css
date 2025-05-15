@@ -6,7 +6,7 @@
 }
 
 .setting:not(:first-child) {
-  margin-top: 35px;
+  margin-top: 15px;
 }
 
 .name {

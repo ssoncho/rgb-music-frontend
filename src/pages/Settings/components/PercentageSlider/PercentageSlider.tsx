@@ -3,14 +3,20 @@ import styles from "./PercentageSlider.module.css";
 import { Slider } from "@mui/material";
 import { useState } from "react";
 
-function PercentageSlider() {
-  const [percentage, setPercentage] = useState(50);
-  const [inputValue, setInputValue] = useState("50");
+interface PercentageSliderProps {
+  setting: number;
+  setSetting: (value: number) => void;
+}
+
+function PercentageSlider({ setting, setSetting }: PercentageSliderProps) {
+  const [percentage, setPercentage] = useState(setting);
+  const [inputValue, setInputValue] = useState(setting.toString());
 
   const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     const numValue = newValue as number;
     setPercentage(numValue);
     setInputValue(numValue.toString());
+    setSetting(numValue);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +37,7 @@ function PercentageSlider() {
     const clampedValue = Math.max(0, Math.min(100, value));
     setPercentage(clampedValue);
     setInputValue(clampedValue.toString());
+    setSetting(clampedValue);
   };
 
   return (
