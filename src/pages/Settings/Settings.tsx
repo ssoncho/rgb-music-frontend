@@ -53,6 +53,9 @@ function Settings() {
         colorMode={mode}
         flashColor={flashColor}
         backgroundColor={backgroundColor}
+        effectBrightness={mainBrightness / 100}
+        backgroundBrightness={backgroundBrightness / 100}
+        smoothness={smoothing / 100}
       />
       <h2>Функция</h2>
       <span className={styles.mode}>{translations[mode]}</span>

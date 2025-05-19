@@ -10,6 +10,9 @@ interface RgbStripProps {
   colorMode: ColorMode;
   flashColor?: string; // For flash mode
   backgroundColor?: string; // Background color for LEDs
+  effectBrightness?: number; // добавляем
+  backgroundBrightness?: number;
+  smoothness?: number;
 }
 
 export default function RgbStrip({
@@ -19,6 +22,9 @@ export default function RgbStrip({
   colorMode,
   flashColor = "#00ffff", // Default cyan flash
   backgroundColor = "#333333", // Default dark gray background
+  effectBrightness = 1, // по умолчанию 100%
+  backgroundBrightness = 1, // по умолчанию 100%
+  smoothness = 0.5,
 }: RgbStripProps) {
   const [activeLeds, setActiveLeds] = useState(0);
   const [isActive, setIsActive] = useState(true);
@@ -54,6 +60,7 @@ export default function RgbStrip({
       const randomFactor = Math.random() * 0.3;
 
       let newPeak = baseBeat * sensitivity + randomFactor;
+
       newPeak = lastPeakRef.current * 0.3 + newPeak * 0.7;
 
       if (newPeak > lastPeakRef.current + 0.15 && newPeak > 0.7) {
@@ -97,6 +104,7 @@ export default function RgbStrip({
     animationSpeed,
     isPeaking,
     peakTimestamp,
+    smoothness,
   ]);
 
   const getRainbowOffset = () => rainbowOffsetRef.current;
@@ -126,7 +134,7 @@ export default function RgbStrip({
 
     const baseStyle = {
       backgroundColor: backgroundColorRef.current,
-      opacity: 1,
+      opacity: backgroundBrightness,
     };
 
     if (!isLedActive && colorMode !== "flash") {
@@ -146,35 +154,29 @@ export default function RgbStrip({
 
         const centerHue = (normalizedDistance * 180 + getRainbowOffset()) % 360;
 
-        effectColor = `hsla(${centerHue}, 100%, 50%, 1)`;
-        shadow = `0 0 10px 5px hsla(${centerHue}, 100%, 50%, 0.7)`;
+        effectColor = `hsla(${centerHue}, 100%, ${50 * effectBrightness}%, 1)`;
+        shadow = `0 0 10px 5px hsla(${centerHue}, 100%, ${
+          50 * effectBrightness
+        }%, 0.7)`;
         break;
       }
 
       case "volume": {
         const centerIndex = Math.floor(ledCount / 2);
+        const distanceFromCenter = Math.abs(index - centerIndex);
 
-        if (index < centerIndex) {
-          const redIntensity = 1 - (index / centerIndex) * 0.5;
-          effectColor = `rgb(255, ${Math.round(
-            50 + 100 * (1 - redIntensity)
-          )}, 0)`;
+        isLedActive = distanceFromCenter < activeLeds;
+        if (isLedActive) {
+          const gradientFactor = distanceFromCenter / (ledCount / 2);
+          const rValue = Math.round(255 * gradientFactor * effectBrightness);
+          const gValue = Math.round(
+            255 * (1 - gradientFactor) * effectBrightness
+          );
+
+          effectColor = `rgb(${rValue}, ${gValue}, 0)`;
           shadow = `0 0 ${10 * intensity}px ${
             5 * intensity
-          }px rgba(255, ${Math.round(50 + 100 * (1 - redIntensity))}, 0, ${
-            intensity * 0.7
-          })`;
-        } else {
-          const greenIntensity =
-            1 - ((index - centerIndex) / (ledCount - centerIndex)) * 0.5;
-          effectColor = `rgb(${Math.round(
-            50 + 100 * (1 - greenIntensity)
-          )}, 255, 0)`;
-          shadow = `0 0 ${10 * intensity}px ${
-            5 * intensity
-          }px rgba(${Math.round(50 + 100 * (1 - greenIntensity))}, 255, 0, ${
-            intensity * 0.7
-          })`;
+          }px rgba(${rValue}, ${gValue}, 0, ${intensity * 0.7})`;
         }
         break;
       }
@@ -196,10 +198,16 @@ export default function RgbStrip({
               b = parseInt(hex.slice(4, 6), 16);
             }
           }
-          effectColor = `rgb(${r}, ${g}, ${b})`;
+          effectColor = `rgb(${r * effectBrightness}, ${
+            g * effectBrightness
+          }, ${b * effectBrightness})`;
           shadow = `
-            0 0 20px 10px rgb(${r}, ${g}, ${b}),
-            0 0 10px 5px rgb(${r}, ${g}, ${b})
+            0 0 20px 10px rgb(${r * effectBrightness}, ${
+            g * effectBrightness
+          }, ${b * effectBrightness}),
+            0 0 10px 5px rgb(${r * effectBrightness}, ${
+            g * effectBrightness
+          }, ${b * effectBrightness})
           `;
           extraStyles = {
             filter: `brightness(1.4) saturate(1.3)`,
@@ -243,7 +251,6 @@ export default function RgbStrip({
   return (
     <div className={styles.rgbStripContainer}>
       <div className={styles.rgbStrip}>{leds}</div>
-      {/* Кнопка паузы убрана по твоему запросу */}
     </div>
   );
 }

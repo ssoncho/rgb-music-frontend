@@ -21,35 +21,35 @@ function Modes() {
         const response = await axios.get(`${config.apiUrl}/settings`);
         setSettings(response.data);
       } catch (err) {
-        setError("Ошибка при загрузке настроек");
+        //setError("Ошибка при загрузке настроек");
         console.error("Error fetching settings:", err);
 
-        // const data = {
-        //   mode: 0,
-        //   vuGreenRed: {
-        //     sensitivity: 70,
-        //     brightness: 80,
-        //     bgBrightness: 10,
-        //     smoothing: 30,
-        //     bgColor: "#000000",
-        //   },
-        //   vuRainbow: {
-        //     sensitivity: 70,
-        //     brightness: 80,
-        //     bgBrightness: 10,
-        //     smoothing: 30,
-        //     bgColor: "#000000",
-        //   },
-        //   flash: {
-        //     sensitivity: 80,
-        //     brightness: 100,
-        //     smoothing: 10,
-        //     color: "#FFFFFF",
-        //   },
-        //   message: "Текущие настройки успешно получены",
-        //   status: "success",
-        // };
-        // setSettings(data);
+        const data = {
+          mode: 0,
+          vuGreenRed: {
+            sensitivity: 70,
+            brightness: 80,
+            bgBrightness: 10,
+            smoothing: 30,
+            bgColor: "#000000",
+          },
+          vuRainbow: {
+            sensitivity: 70,
+            brightness: 80,
+            bgBrightness: 10,
+            smoothing: 30,
+            bgColor: "#000000",
+          },
+          flash: {
+            sensitivity: 80,
+            brightness: 100,
+            smoothing: 10,
+            color: "#FFFFFF",
+          },
+          message: "Текущие настройки успешно получены",
+          status: "success",
+        };
+        setSettings(data);
       } finally {
         setLoading(false);
       }
