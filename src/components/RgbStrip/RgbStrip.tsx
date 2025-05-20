@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import styles from "./RgbStrip.module.css";
 
-type ColorMode = "rainbow" | "volume" | "flash";
+type ColorMode = "rainbow" | "volume" | "flash" | "none";
 
 interface RgbStripProps {
   ledCount?: number;
@@ -43,7 +43,7 @@ export default function RgbStrip({
   }, [backgroundColor]);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive || colorMode === "none") return;
 
     const animate = (timestamp: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = timestamp;
@@ -110,6 +110,15 @@ export default function RgbStrip({
   const getRainbowOffset = () => rainbowOffsetRef.current;
 
   const getLedStyle = (index: number) => {
+    if (colorMode === "none") {
+      // Если режим none, делаем фон прозрачным и полностью невидимым
+      return {
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        opacity: 1,
+        transition: "none",
+      };
+    }
+
     let isLedActive = false;
     let intensity = 0;
 
@@ -248,9 +257,5 @@ export default function RgbStrip({
     />
   ));
 
-  return (
-    <div className={styles.rgbStripContainer}>
-      <div className={styles.rgbStrip}>{leds}</div>
-    </div>
-  );
+  return <div className={styles.rgbStrip}>{leds}</div>;
 }

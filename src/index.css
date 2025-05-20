@@ -90,3 +90,26 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+.spinner-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* Центрируем блок */
+  transform: translate(-50%, -50%);
+}
+
+.spinner {
+  border: 6px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #f8d4fe;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

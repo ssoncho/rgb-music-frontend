@@ -1,0 +1,84 @@
+.contentWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 110px auto;
+  margin-bottom: 0;
+}
+
+.textSection {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.mainHeading {
+  font-family: "Bebas Neue";
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 0.92;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  font-family: "Bebas Neue";
+  font-weight: 700;
+  font-size: 96px;
+  color: #d4ff00;
+}
+
+.ctaButton {
+  font-family: Geist;
+  background-color: #7ed957;
+  color: #000;
+  border: none;
+  border-radius: 2rem;
+  padding: 18px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.ctaButton:hover {
+  background-color: #9aff6b;
+  transform: translateY(-2px);
+}
+
+.arrow {
+  margin-left: 0.5rem;
+}
+
+.illustrationSection {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.illustration {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .contentWrapper {
+    flex-direction: column;
+  }
+
+  .textSection {
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .mainHeading {
+    font-size: 3rem;
+  }
+
+  .illustrationSection {
+    justify-content: center;
+  }
+}

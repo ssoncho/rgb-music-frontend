@@ -1,6 +1,10 @@
 import styles from "./ConnectionStatus.module.css";
 
-function ConnectionStatus() {
+interface ConnectionStatusProps {
+  isConnected: Boolean;
+}
+
+function ConnectionStatus({ isConnected }: ConnectionStatusProps) {
   return (
     <div className={styles.container}>
       <svg
@@ -10,9 +14,16 @@ function ConnectionStatus() {
         viewBox="0 0 31 31"
         fill="none"
       >
-        <circle cx="15.5" cy="15.5" r="15.5" fill="#F2F4FE" />
+        <circle
+          cx="15.5"
+          cy="15.5"
+          r="15.5"
+          fill={isConnected ? "#98DF5D" : "#F2F4FE"}
+        />
       </svg>
-      <span className={styles.status}>Не подключен</span>
+      <span className={styles.status}>
+        {isConnected ? "Подключен" : "Не подключен"}
+      </span>
     </div>
   );
 }

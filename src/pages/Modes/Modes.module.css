@@ -18,5 +18,59 @@ h1 {
   display: flex;
   column-gap: 30px;
   align-items: center;
-  margin-top: 75px;
+  margin-top: 40px;
+}
+
+.connectButton {
+  background-color: #98df5d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 20px 0;
+  font-family: Geist;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.connectButton:hover {
+  background-color: #84c450;
+}
+
+.disconnectButton {
+  background-color: #ed8a74;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 20px 0;
+  font-family: Geist;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.disconnectButton:hover {
+  background-color: #c87653;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.currentModeTitle {
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+.currentMode {
+  color: #e7fe55;
 }

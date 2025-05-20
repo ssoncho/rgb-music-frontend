@@ -1,0 +1,72 @@
+.header {
+  background-size: 100px 100%;
+  color: white;
+  height: 70px;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+}
+
+.logoText {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.logoTextWhite {
+  font-weight: 500;
+  color: white;
+}
+
+.logoTextYellow {
+  font-weight: 500;
+  color: #e7fe55;
+}
+
+.nav {
+  display: flex;
+  gap: 30px;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  position: relative;
+  padding: 10px 0;
+}
+
+.navLink:hover {
+  color: #e7fe55;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  right: -15px;
+  top: 0;
+  height: 100%;
+  width: 1px;
+}
+
+.navLink:last-child::after {
+  display: none;
+}

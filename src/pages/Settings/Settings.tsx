@@ -8,6 +8,8 @@ import RgbStrip from "../../components/RgbStrip/RgbStrip";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import api from "../../config/api";
+import Header from "../../components/Header/Header";
 
 const translations: { [id: string]: string } = {
   rainbow: "Радуга",
@@ -20,32 +22,133 @@ function Settings() {
   const { state } = location;
   const navigate = useNavigate();
   const mode = state?.mode || "";
-  const settings = state?.settings || {};
+
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
+  const [error, setError] = useState("");
+
+  const [sensitivity, setSensitivity] = useState(50);
+  const [mainBrightness, setMainBrightness] = useState(50);
+  const [backgroundBrightness, setBackgroundBrightness] = useState(50);
+  const [smoothing, setSmoothing] = useState(50);
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+  const [flashColor, setFlashColor] = useState("#ffffff");
 
   useEffect(() => {
     if (!mode || !["rainbow", "volume", "flash"].includes(mode)) {
       console.log(mode);
-      navigate("/");
+      navigate("/modes");
+      return;
     }
+
+    const checkConnection = async () => {
+      try {
+        const response = await api.get("/connection");
+        setIsConnected(response.data.isConnected);
+        return response.data.isConnected;
+      } catch (err) {
+        console.error("Ошибка проверки подключения:", err);
+        setIsConnected(false);
+        return false;
+      }
+    };
+
+    const fetchSettings = async () => {
+      try {
+        const response = await api.get(`/${mode}`);
+        const data = response.data;
+
+        setSensitivity(data.sensitivity ?? 50);
+        setMainBrightness(data.brightness ?? 50);
+        setSmoothing(data.smoothing ?? 50);
+
+        if (mode === "flash") {
+          setFlashColor(data.color || "#ffffff");
+        } else {
+          setBackgroundBrightness(data.bgBrightness ?? 50);
+          setBackgroundColor(data.bgColor || "#ffffff");
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Ошибка при получении настроек:", error);
+        navigate("/modes");
+      }
+    };
+
+    const init = async () => {
+      const connected = await checkConnection();
+      if (connected) {
+        await fetchSettings();
+      } else {
+        setLoading(false);
+      }
+    };
+
+    init();
   }, [mode, navigate]);
 
-  const [sensitivity, setSensitivity] = useState(settings.sensitivity || 50);
-  const [mainBrightness, setMainBrightness] = useState(
-    settings.brightness || 50
-  );
-  const [backgroundBrightness, setBackgroundBrightness] = useState(
-    settings.bgBrightness || 50
-  );
-  const [smoothing, setSmoothing] = useState(settings.smoothing || 50);
-  const [backgroundColor, setBackgroundColor] = useState(
-    settings.bgColor || "#fff"
-  );
-  const [flashColor, setFlashColor] = useState(settings.color || "#fff");
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await api.get("/connection");
+      if (!response.data.isConnected) {
+        setIsConnected(false);
+        setError("Контроллер отключился.");
+        return;
+      }
+
+      setError("");
+
+      let payload: any = {
+        sensitivity,
+        brightness: mainBrightness,
+        smoothing,
+      };
+
+      if (mode === "flash") {
+        payload.color = flashColor;
+      } else {
+        payload.bgBrightness = backgroundBrightness;
+        payload.bgColor = backgroundColor;
+      }
+
+      await api.patch(`/${mode}`, payload);
+      setNotification("Настройки успешно сохранены!");
+      setTimeout(() => setNotification(null), 3000);
+    } catch (err) {
+      console.error("Ошибка сохранения настроек:", err);
+      setError("Ошибка при отправке настроек.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className="spinner-wrapper">
+          <div className="spinner"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
+      <Header />
+
+      <div className={styles.headerRow}>
+        <button className={styles.backButton} onClick={handleBack}>
+          ← Назад
+        </button>
+      </div>
+
       <h1>Настройка</h1>
-      <ConnectionStatus></ConnectionStatus>
+      <ConnectionStatus isConnected={isConnected} />
       <RgbStrip
         ledCount={30}
         sensitivity={1}
@@ -59,6 +162,7 @@ function Settings() {
       />
       <h2>Функция</h2>
       <span className={styles.mode}>{translations[mode]}</span>
+
       <div className={styles.settings}>
         <SettingItem label="Чувствительность %">
           <PercentageSlider setting={sensitivity} setSetting={setSensitivity} />
@@ -102,6 +206,20 @@ function Settings() {
           </SettingItem>
         )}
       </div>
+
+      {error && <div className={styles.error}>{error}</div>}
+
+      <button
+        className={styles.saveButton}
+        onClick={handleSave}
+        disabled={!isConnected}
+      >
+        Сохранить настройки
+      </button>
+
+      {notification && (
+        <div className={styles.notification}>{notification}</div>
+      )}
     </div>
   );
 }

@@ -9,33 +9,111 @@ h1 {
 
   font-family: "Bebas Neue";
   font-weight: 700;
-  font-size: 96px;
-  line-height: 1.2;
+  font-size: 80px;
+  line-height: 1;
   letter-spacing: 3px;
 }
 
-.strip {
-  margin-top: 37px;
-  width: 1036px;
-  height: 120px;
-  border-radius: 20px;
-}
-
 h2 {
-  margin-top: 21px;
+  margin-top: 10px;
   color: #f8d4fe;
-  font-size: 48px;
+  font-size: 36px;
   line-height: 1.2;
 }
 
 .mode {
-  margin-top: 5px;
   color: #e7fe55;
   font-size: 24px;
 }
 
 .settings {
-  margin-top: 40px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
+}
+
+.saveButton {
+  padding: 12px 24px;
+  margin: 20px 0;
+  margin-bottom: 0;
+  background-color: #e7fe55;
+  color: #222629;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: Geist;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #c4da34;
+}
+
+.saveButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #76ad4a; /* зелёный фон */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  z-index: 1000;
+  animation: fadein 0.3s, fadeout 0.3s 2.7s; /* плавное появление и исчезновение */
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.headerRow {
+  display: flex;
+  align-self: flex-start; /* прижать содержимое к левому краю */
+  padding-left: 8px; /* небольшой отступ слева от края контейнера */
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #e7fe55;
+  font-family: Geist;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  user-select: none;
+}
+
+.backButton:hover {
+  text-decoration: underline;
 }
